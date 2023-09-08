@@ -13,6 +13,9 @@ resource "azurerm_network_interface" "nic_prod" {
   location            = azurerm_resource_group.rg_prod.location
   resource_group_name = azurerm_resource_group.rg_prod.name
   provider            = azurerm.Prod
+  depends_on = [
+    azurerm_resource_group.rg-hub
+  ]
 
   ip_configuration {
     name                          = "internal"
@@ -61,6 +64,9 @@ resource "azurerm_network_interface" "nic_dev" {
   location            = azurerm_resource_group.rg_dev.location
   resource_group_name = azurerm_resource_group.rg_dev.name
   provider            = azurerm.Dev
+  depends_on = [
+    azurerm_resource_group.rg-dev
+  ]
 
   ip_configuration {
     name                          = "internal"
@@ -109,6 +115,9 @@ resource "azurerm_network_interface" "nic_test" {
   location            = azurerm_resource_group.rg_test.location
   resource_group_name = azurerm_resource_group.rg_test.name
   provider            = azurerm.Test
+  depends_on = [
+    azurerm_resource_group.rg-test
+  ]
 
   ip_configuration {
     name                          = "internal"

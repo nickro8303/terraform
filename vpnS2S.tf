@@ -4,7 +4,10 @@ resource "azurerm_subnet" "subnet_gateway" {
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.virtual_network_name
   address_prefixes     = ["172.16.2.0/24"]
-  provider = azurerm.Prod
+  provider             = azurerm.Prod
+  depends_on = [
+    azurerm_resource_group.rg-hub
+  ]
 }
 
 
@@ -13,14 +16,17 @@ resource "azurerm_public_ip" "pub-ip" {
   resource_group_name = var.resource_group_name
   location            = var.location
   allocation_method   = "Dynamic"
-  provider = azurerm.Prod
+  provider            = azurerm.Prod
 }
 
 resource "azurerm_virtual_network_gateway" "vnet-gateway" {
   name                = "vpn-gateway"
   location            = var.location
   resource_group_name = var.resource_group_name
-  provider = azurerm.Prod
+  provider            = azurerm.Prod
+  depends_on = [
+    azurerm_resource_group.rg-hub
+  ]
 
   type     = "Vpn"
   vpn_type = "RouteBased"
@@ -41,7 +47,7 @@ resource "azurerm_local_network_gateway" "local-gateway" {
   name                = "vpn-local-gateway"
   location            = var.location
   resource_group_name = var.resource_group_name
-  provider = azurerm.Prod
+  provider            = azurerm.Prod
 
 
   gateway_address = var.gateway_address
@@ -52,7 +58,7 @@ resource "azurerm_virtual_network_gateway_connection" "gateway-connection" {
   name                = "site2site_Pfsense"
   resource_group_name = var.resource_group_name
   location            = var.location
-  provider = azurerm.Prod
+  provider            = azurerm.Prod
 
 
   type                       = "IPsec"
