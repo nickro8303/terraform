@@ -2,3 +2,5 @@
 terraform.tfvars
 .terraform
 providers.tf
+terraform.tfstate
+tfstate.backup
